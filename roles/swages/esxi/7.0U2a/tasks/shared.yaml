@@ -1,0 +1,7 @@
+---
+- name: Mounting ESXi 7.0U2a ISO
+  ansible.posix.mount:
+    path: "{{ webserver.ospath }}/shared/esxi/7.0U2a/"
+    src: "{{ iso.ospath }}/VMware-VMvisor-Installer-7.0U2a-17867351.x86_64.iso"
+    fstype: iso9660
+    state: mounted

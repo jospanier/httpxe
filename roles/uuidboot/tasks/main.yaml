@@ -1,0 +1,18 @@
+---
+- name: Copying tftp bootfiles
+  copy:
+    src: files/tftp/
+    dest: "{{ tftpserver.ospath }}"
+    local_follow: no
+    owner: dnsmasq
+    group: nogroup
+    mode: '0644'
+
+- name: Templating out tftp ipxe bootscript 
+  template:
+    src: templates/tftp/boot.ipxe.j2
+    dest: "{{ tftpserver.ospath  }}/boot.ipxe"
+    local_follow: no
+    owner: dnsmasq
+    group: nogroup
+    mode: '0644'

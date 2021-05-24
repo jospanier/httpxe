@@ -1,0 +1,19 @@
+---
+- name: Creating ISO directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ iso.ospath }}"
+    state: directory
+
+- name: Downloading GRML ISO
+  ansible.builtin.get_url:
+    force: "no"
+    url: http://download.grml.org/grml64-full_2020.06.iso
+    checksum: "sha256:a6d8f82f020e33e13ddf71978234a4168506b1dd89c91ce4ebc13ef86025039f"
+    dest: "{{ iso.ospath }}/grml64-full_2020.06.iso"
+
+- name: Mounting GRML ISO
+  ansible.posix.mount:
+    path: "{{ webserver.ospath }}/shared/grml/"
+    src: "{{ iso.ospath }}/grml64-full_2020.06.iso"
+    fstype: iso9660
+    state: mounted

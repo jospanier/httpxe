@@ -1,0 +1,5 @@
+---
+role: "systemrescue"
+
+# encrypted password for user root
+encpasswd: "$6$ASDF......"

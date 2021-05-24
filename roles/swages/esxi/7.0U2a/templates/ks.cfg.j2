@@ -1,0 +1,7 @@
+accepteula
+clearpart --alldrives --overwritevmfs 
+install --firstdisk=usb,local --novmfsondisk --overwritevmfs
+#--disk=mpx.vmhba1:C0:T0:L0
+network --bootproto=dhcp --device={{ interface }}
+reboot
+rootpw  --iscrypted {{ encpasswd }}

@@ -1,0 +1,16 @@
+---
+- name: "Creating destination directory"
+  file:
+    path: "{{ webserver.ospath }}/uuid/{{ inventory_hostname }}/"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: 'Copying boot script for targets with template "none"'
+  copy:
+    src:  "templates/"
+    dest: "{{ webserver.ospath }}/uuid/{{ inventory_hostname }}/"
+    owner: www-data
+    group: www-data
+    mode: '0644'

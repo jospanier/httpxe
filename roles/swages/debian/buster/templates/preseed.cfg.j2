@@ -1,0 +1,34 @@
+d-i debian-installer/locale string de_DE.UTF-8
+d-i keyboard-configuration/xkb-keymap select de
+
+d-i passwd/root-login boolean true
+d-i passwd/root-password-crypted password {{ encpasswd }}
+
+d-i passwd/make-user boolean false
+#d-i passwd/user-fullname string Debian User
+#d-i passwd/username string debian
+#d-i passwd/user-password-crypted password <pwhash>
+
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-auto-lvm/new_vg_name string system
+d-i partman-auto/disk string {{ disk }}
+d-i partman-auto/method string lvm
+d-i partman-efi/non_efi_system boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+
+tasksel tasksel/first multiselect {{ tasksel }}
+
+d-i grub-installer/bootdev string {{ disk }}
+
+d-i finish-install/reboot_in_progress note
+
+{% if sshkey is defined -%}
+d-i preseed/late_command string in-target mkdir -p /root/.ssh/ ; \
+                                in-target chmod 700 /root/.ssh/ ; \
+                                in-target /bin/sh -c 'echo "{{ sshkey }}" >> /root/.ssh/authorized_keys' ;
+{% endif %}

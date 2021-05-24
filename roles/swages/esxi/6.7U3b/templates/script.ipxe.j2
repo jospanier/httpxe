@@ -1,0 +1,10 @@
+#!ipxe
+imgfree
+iseq ${platform} efi && set exsi_boot_image efi/boot/bootx64.efi || set exsi_boot_image mboot.c32
+kernel --name kernel {{ webserver.url }}/shared/esxi/6.7U3b/${exsi_boot_image} \
+  -c {{ webserver.url }}/uuid/${uuid}/boot.cfg \
+  netdevice=${mac} BOOTIF=01-${mac:hexhyp} \
+  ks={{ webserver.url }}/uuid/${uuid}/ks.cfg
+boot kernel
+
+# for BIOS comboot (*.c32) support one needs "#define IMAGE_COMBOOT" in ipxe/src/config/general.h 

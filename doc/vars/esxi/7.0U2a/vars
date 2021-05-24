@@ -1,0 +1,8 @@
+---
+role: "esxi/7.0U2a"
+
+# mac address or name (vmnic0) of the interface to use as management interface after installation 
+interface: "00:11:22:33:44:55"
+
+# encrypted password for user root
+encpasswd: "$6$ASDF......"

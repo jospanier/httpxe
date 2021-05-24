@@ -1,0 +1,20 @@
+---
+- name: "Creating destination directory"
+  file:
+    path: "{{ webserver.ospath }}/uuid/{{ inventory_hostname }}/"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: 'Templating out boot script for targets with template "esxi/6.7U3b"'
+  template:
+    src:  "templates/{{ item }}.j2"
+    dest: "{{ webserver.ospath }}/uuid/{{ inventory_hostname }}/{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  loop:
+    - script.ipxe
+    - boot.cfg
+    - ks.cfg

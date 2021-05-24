@@ -1,0 +1,8 @@
+#!ipxe
+imgfree
+set base_url {{ webserver.url }}/shared/debian/buster
+initrd --name initrd ${base_url}/initrd.gz
+kernel --name kernel ${base_url}/linux initrd=initrd \
+ auto=true priority=critical url={{ webserver.url }}/uuid/${uuid}/preseed.cfg \
+ interface={{ interface }} netcfg/hostname={{ hostname  }} --- quiet
+boot kernel

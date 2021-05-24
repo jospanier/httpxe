@@ -1,0 +1,30 @@
+---
+- name: Installing uPXE Server and uuidboot files
+  hosts: pxe
+  become: true
+  gather_facts: false
+
+  vars_files: vars/config.yaml
+
+  roles:
+    - role: upxe
+    - role: uuidboot
+
+
+- name: Installing HTTP Server
+  hosts: http
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Installing lighttpd 
+      apt:
+        name: lighttpd
+        state: present
+        update_cache: yes
+        cache_valid_time: "3600"
+    
+    - name: Making sure lighttpd service is started
+      service:
+        name: lighttpd
+        state: started

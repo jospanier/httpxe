@@ -1,0 +1,27 @@
+---
+- name: Creating Debian Buster directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ webserver.ospath }}/shared/debian/buster/"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Downloading Debian Buster files
+  vars:
+    base_url: "https://deb.debian.org/debian/dists/buster/main/installer-amd64/current/images/netboot/debian-installer/amd64"
+  ansible.builtin.get_url:
+    force: "no"
+    url: "{{ base_url }}/{{ file.name }}"
+#     checksum: "sha256:{{ file.sha256 }}"
+    dest: "{{ webserver.ospath }}/shared/debian/buster/{{ file.name }}"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  loop:
+    - name: "linux"
+      sha256: ""
+    - name: "initrd.gz"
+      sha256: ""
+  loop_control:
+    loop_var: file

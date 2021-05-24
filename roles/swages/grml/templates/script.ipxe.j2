@@ -1,0 +1,8 @@
+#!ipxe
+imgfree
+set base_url {{ webserver.url }}/shared/grml
+kernel --name kernel ${base_url}/boot/grml64full/vmlinuz\
+  initrd=initrd ethdevice={{ interface }} ip=dhcp hostname={{ hostname }}\
+  boot=live fetch=${base_url}/live/grml64-full/grml64-full.squashfs ssh encpasswd={{ encpasswd }}
+initrd --name initrd ${base_url}/boot/grml64full/initrd.img
+boot kernel

@@ -1,0 +1,9 @@
+webserver:
+  ospath: "/var/www/html"
+  url: "http://pxe"
+
+tftpserver:
+  ospath: "/srv/tftp"
+
+iso:
+  ospath: "/var/local/iso"

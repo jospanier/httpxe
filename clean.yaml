@@ -1,0 +1,93 @@
+---
+- name: Cleaning PXE server
+  hosts: pxe
+  become: true
+  gather_facts: false
+
+  vars_files: vars/config.yaml
+
+  tasks:
+
+    - name: stopping services
+      service:
+        name: "{{ item }}"
+        state: stopped
+      loop:
+        - dnsmasq
+
+    - name: creating list of files to delete
+      find:
+        file_type: "any"
+        paths: 
+          - "/etc/dnsmasq.d/"
+          - "{{ tftpserver.ospath }}/"
+        recurse: yes
+        patterns: "*"
+      register: files_to_delete
+
+    - name: deleting files from list
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_delete.files }}"
+
+
+- name: Cleaning HTTP server
+  hosts: http
+  become: true
+  gather_facts: false
+
+  vars_files: vars/main.yaml
+
+  tasks:
+
+    - name: stopping services
+      service:
+        name: "{{ item }}"
+        state: stopped
+      loop:
+        - lighttpd
+
+    - name: Unmounting GRML ISO
+      ansible.posix.mount:
+        path: "{{ webserver.ospath }}/shared/grml/"
+        src: "{{ iso.ospath }}/grml64-full_2020.06.iso"
+        fstype: iso9660
+        state: unmounted
+
+    - name: Unmounting SystemRescue ISO
+      ansible.posix.mount:
+        path: "{{ webserver.ospath }}/shared/systemrescue/"
+        src: "{{ iso.ospath }}/systemrescue-8.03-amd64.iso"
+        fstype: iso9660
+        state: unmounted
+
+    - name: Unmounting ESXi 6.7U3b ISO
+      ansible.posix.mount:
+        path: "{{ webserver.ospath }}/shared/esxi/6.7U3b/"
+        src: "{{ iso.ospath }}/VMware-VMvisor-Installer-201912001-15160138.x86_64.iso"
+        fstype: iso9660
+        state: unmounted
+
+    - name: Unmounting ESXi 7.0U2a ISO
+      ansible.posix.mount:
+        path: "{{ webserver.ospath }}/shared/esxi/7.0U2a/"
+        src: "{{ iso.ospath }}/VMware-VMvisor-Installer-7.0U2a-17867351.x86_64.iso"
+        fstype: iso9660
+        state: unmounted
+
+    - name: creating list of files to delete
+      find:
+        file_type: "any"
+        paths: 
+          - "{{ webserver.ospath }}/"
+        recurse: yes
+        patterns: "*"
+      register: files_to_delete
+
+    - name: deleting files from list
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_to_delete.files }}"
+

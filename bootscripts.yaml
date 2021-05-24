@@ -1,0 +1,16 @@
+---
+- name: Preparing bootscripts for all target by uuids
+  hosts: targets
+  become: true
+  gather_facts: false
+  
+  vars_files: vars/config.yaml
+
+  tasks:
+      # slight hack here, as we may not delegate the "include_*" tasks, but OK to delegate a task block
+    - delegate_to: http
+      block:
+        - name: Including roles for targets
+          include_role:
+            name: "swages/{{ role }}"
+

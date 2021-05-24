@@ -1,0 +1,3 @@
+#!ipxe
+ifconf
+chain tftp://pxe/boot.ipxe

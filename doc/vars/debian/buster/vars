@@ -1,0 +1,20 @@
+---
+role: "debian/buster"
+
+# interface to use during installation
+interface: "ens18"
+
+# hostname for the installed system
+hostname: "debian"
+
+# encrypted password for user root
+encpasswd: "$6$ASDF......"
+
+# disk device name where debian is to be installed 
+disk: "/dev/sda"
+
+# tasks that are to be installed
+tasksel: "standard, ssh-server"
+
+# (optional) sshkey for root
+sshkey

@@ -1,0 +1,11 @@
+---
+role: "grml"
+
+# interface to use during boot and live mode
+interface: "eth0"
+
+# hostname for the live system
+hostname = "grml"
+
+# encrypted password for user root
+encpasswd: "$6$ASDF......"

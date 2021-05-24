@@ -1,0 +1,28 @@
+---
+- name: Copying common operating system boot files
+  hosts: http
+  become: true
+  gather_facts: false
+
+  vars_files: vars/config.yaml
+
+  tasks:
+    - name: Including "shared" tasks from swage roles
+      include_role:
+        name: "swages/{{ os }}"
+        tasks_from: shared.yaml
+      loop:
+        - debian/buster
+        - grml
+        - systemrescue
+        - esxi/6.7U3b
+        - esxi/7.0U2a
+      loop_control:
+        loop_var: os       
+
+
+
+
+
+
+

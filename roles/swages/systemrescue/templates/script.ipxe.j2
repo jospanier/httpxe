@@ -1,0 +1,11 @@
+#!ipxe
+imgfree
+set base_url {{ webserver.url }}/shared/systemrescue
+
+kernel --name kernel ${base_url}/sysresccd/boot/x86_64/vmlinuz\
+  initrd=initrd BOOTIF=01-${mac:hexhyp} ip=dhcp\
+  archisobasedir=sysresccd archiso_http_srv=${base_url}/ rootcryptpass={{ encpasswd }} nofirewall
+initrd --name intel_ucode ${base_url}/sysresccd/boot/intel_ucode.img
+initrd --name amd_ucode ${base_url}/sysresccd/boot/amd_ucode.img
+initrd --name initrd ${base_url}/sysresccd/boot/x86_64/sysresccd.img
+boot kernel

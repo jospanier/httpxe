@@ -1,0 +1,19 @@
+---
+- name: Creating ISO directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ iso.ospath }}/"
+    state: directory
+
+- name: Downloading SystemRescue ISO
+  ansible.builtin.get_url:
+    force: "no"
+    url: https://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/8.03/systemrescue-8.03-amd64.iso/download
+    checksum: "sha256:546e084ef765e9715eaa0831132cea47048208d13ed8fe58603efbe901f8c0b2"
+    dest: "{{ iso.ospath}}/systemrescue-8.03-amd64.iso"
+
+- name: Mounting SystemRescue ISO
+  ansible.posix.mount:
+    path: "{{ webserver.ospath }}/shared/systemrescue/"
+    src: "{{ iso.ospath }}/systemrescue-8.03-amd64.iso"
+    fstype: iso9660
+    state: mounted
